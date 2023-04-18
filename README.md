@@ -1,4 +1,4 @@
-# DNP Lab7 Solution 2022
+# DNP Final Project Solution 2022
 
 ## Improved RAFT system emulation
 
