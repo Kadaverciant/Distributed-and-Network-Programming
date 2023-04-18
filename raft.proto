@@ -1,0 +1,65 @@
+syntax = "proto3";
+
+service RaftNode {
+        rpc RequestVote(VoteArgs) returns (ResultWithTerm);
+        rpc AppendEntries(HeartbeatArgs) returns (ResultWithTerm);
+        rpc GetLeader(Empty) returns (LeaderResp);
+        rpc Suspend(DurationArgs) returns (Empty);
+        rpc SetVal(SetArgs) returns (Result);
+        rpc GetVal(GetArgs) returns (ResultWithVal);
+}
+
+message Empty {}
+
+message GetArgs {
+        string key = 1;
+}
+
+message ResultWithVal {
+        bool result = 1;
+        string value = 2;
+}
+
+message Result {
+        bool result = 1;
+}
+
+message SetArgs {
+        string key = 1;
+        string value = 2;
+}
+
+message VoteArgs {
+        int32 term = 1;
+        int32 candidate_id = 2;
+        int32 last_log_index = 3;
+        int32 last_log_term = 4;
+}
+
+message HeartbeatArgs {
+        message Entry {
+               int32 index = 1;
+               int32 term_number = 2;
+               string command = 3; // key+' '+value
+        }
+        int32 term = 1;
+        int32 leader_id = 2;
+        int32 prev_log_index = 3;
+        int32 prev_log_term = 4;
+        repeated Entry entries= 5;
+        int32 leader_commit = 6;
+}
+
+message ResultWithTerm {
+        int32 term = 1;
+        bool result = 2;
+}
+
+message DurationArgs {
+        int32 duration = 1;
+}
+
+message LeaderResp {
+        int32 leader_id = 1;
+        string leader_addr = 2;
+}
